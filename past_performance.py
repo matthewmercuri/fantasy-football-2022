@@ -25,7 +25,12 @@ def get_individuals_df() -> pd.DataFrame:
     df["Player"] = df["Player"].apply(lambda x: x.replace("+", ""))
     df["Player"] = df["Player"].apply(lambda x: x.replace("*", ""))
 
-    df["Touches"] = df[TOUCH_COLUMNS].astype(int).sum(axis="columns")
+    df["Touches"] = df[TOUCH_COLUMNS].astype(float).sum(axis="columns")
+    df["FantPt/Touch"] = df["Fantasy_FantPt"].astype(float) / df["Touches"]
+    df["FantPt/Touch"] = df.apply(
+        lambda x: 0 if x["Touches"] < 10 or x["FantPos"] == "QB" else x["FantPt/Touch"],
+        axis=1,
+    )
 
     return df
 
