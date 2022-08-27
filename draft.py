@@ -12,6 +12,13 @@ def _apply_fantpt_touch(x, past_players, pp_df):
     return pp_df[pp_df["Player"] == pp_df_player]["FantPt/Touch"].iloc[0]
 
 
+def _apply_fantpt_touch_zscore(x, past_players, pp_df):
+    current_player = x["Player"]
+    pp_df_player, _ = process.extractOne(current_player, past_players[0])
+
+    return pp_df[pp_df["Player"] == pp_df_player]["FantPt/Touch_Z"].iloc[0]
+
+
 def _apply_vbd(x, past_players, pp_df):
     current_player = x["Player"]
     pp_df_player, _ = process.extractOne(current_player, past_players[0])
@@ -27,6 +34,10 @@ def assemble_draft_csv() -> pd.DataFrame:
 
     draft_df["FantPt/Touch"] = draft_df.apply(
         _apply_fantpt_touch, axis=1, args=([past_players], pp_df)
+    )
+
+    draft_df["FantPt/Touch_Z"] = draft_df.apply(
+        _apply_fantpt_touch_zscore, axis=1, args=([past_players], pp_df)
     )
 
     draft_df["VBD"] = draft_df.apply(_apply_vbd, axis=1, args=([past_players], pp_df))
