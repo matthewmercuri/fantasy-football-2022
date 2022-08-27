@@ -34,7 +34,13 @@ def _apply_draft_pick(x, participants):
 
     pick_in_round_zero_indexed = math.floor(rank / participants)
     pick_in_round = pick_in_round_zero_indexed + 1
-    pick_number = rank % participants
+    pick_number = (rank % participants) + 1
+
+    if pick_in_round == 1:
+        pick_number -= 1
+
+    if pick_in_round_zero_indexed == 0 and pick_number == 12:
+        pick_in_round += 1
 
     return f"Round {pick_in_round}, Pick {pick_number}"
 
