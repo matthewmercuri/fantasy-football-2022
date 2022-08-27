@@ -36,3 +36,6 @@ def get_individuals_df() -> pd.DataFrame:
     )
 
     return df
+
+
+get_individuals_df().to_csv("past_performance.csv")
