@@ -4,6 +4,8 @@ from adp import get_fantasy_pros_adp_df
 from fantpt_touch import apply_fantpt_touch_stats
 from past_performance import get_individuals_df
 
+PARTICIPANTS = 12
+
 
 def _apply_fantpt_touch(x, past_players, pp_df):
     current_player = x["Player"]
@@ -26,7 +28,7 @@ def _apply_vbd(x, past_players, pp_df):
     return pp_df[pp_df["Player"] == pp_df_player]["Fantasy_VBD"].iloc[0]
 
 
-def assemble_draft_csv() -> pd.DataFrame:
+def assemble_draft_csv(participants: int = PARTICIPANTS) -> pd.DataFrame:
     draft_df = get_fantasy_pros_adp_df()
 
     pp_df = apply_fantpt_touch_stats(get_individuals_df())
@@ -41,6 +43,8 @@ def assemble_draft_csv() -> pd.DataFrame:
     )
 
     draft_df["VBD"] = draft_df.apply(_apply_vbd, axis=1, args=([past_players], pp_df))
+
+    draft_df.sort_values(by="AVG", ascending=True, inplace=True)
 
     return draft_df
 
