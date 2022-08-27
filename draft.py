@@ -1,5 +1,6 @@
 import pandas as pd
 from thefuzz import process
+import math
 from adp import get_fantasy_pros_adp_df
 from fantpt_touch import apply_fantpt_touch_stats
 from past_performance import get_individuals_df
@@ -28,6 +29,15 @@ def _apply_vbd(x, past_players, pp_df):
     return pp_df[pp_df["Player"] == pp_df_player]["Fantasy_VBD"].iloc[0]
 
 
+def _apply_draft_pick(x, participants):
+    rank = x["Index"] + 1
+
+    pick_in_round = math.floor(rank / (participants + 1)) + 1
+    pick_number = math.remainder(rank, participants)
+
+    return f"Round {pick_in_round}, Pick {pick_number}"
+
+
 def assemble_draft_csv(participants: int = PARTICIPANTS) -> pd.DataFrame:
     draft_df = get_fantasy_pros_adp_df()
 
@@ -45,6 +55,9 @@ def assemble_draft_csv(participants: int = PARTICIPANTS) -> pd.DataFrame:
     draft_df["VBD"] = draft_df.apply(_apply_vbd, axis=1, args=([past_players], pp_df))
 
     draft_df.sort_values(by="AVG", ascending=True, inplace=True)
+    draft_df.reset_index(inplace=True)
+    draft_df["Index"] = draft_df.index
+    draft_df["Pick"] = draft_df.apply(_apply_draft_pick, axis=1, args=([participants]))
 
     return draft_df
 
