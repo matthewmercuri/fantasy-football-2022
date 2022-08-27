@@ -1,3 +1,4 @@
+import pandas as pd
 from thefuzz import process
 from adp import get_fantasy_pros_adp_df
 from past_performance import get_individuals_df
@@ -10,15 +11,17 @@ def _apply_fantpt_touch(x, past_players, pp_df):
     return pp_df[pp_df["Player"] == pp_df_player]["FantPt/Touch"].iloc[0]
 
 
-def assemble_draft_csv():
+def assemble_draft_csv() -> pd.DataFrame:
     draft_df = get_fantasy_pros_adp_df()
 
     pp_df = get_individuals_df()
     past_players = pp_df["Player"].tolist()
 
-    draft_df["FantPt/Touch"] = draft_df.head(1).apply(
+    draft_df["FantPt/Touch"] = draft_df.apply(
         _apply_fantpt_touch, axis=1, args=([past_players], pp_df)
     )
 
+    return draft_df
 
-assemble_draft_csv()
+
+assemble_draft_csv().to_csv("draft.csv")
