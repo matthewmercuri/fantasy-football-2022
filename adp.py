@@ -16,7 +16,7 @@ def _extract_team_name(x: pd.DataFrame):
 def get_fantasy_pros_adp_df() -> pd.DataFrame:
     df = pd.read_html(FANTASY_PROS_URL)[0]
 
-    df = df[["Player Team (Bye)", "AVG"]]
+    df = df[["Player Team (Bye)", "AVG", "POS"]]
 
     df["Team Name 1"] = df["Player Team (Bye)"].apply(
         lambda x: re.search("[A-Z]{2}(?<![A-Z]{3})(?![A-Z])", x)
@@ -39,7 +39,7 @@ def get_fantasy_pros_adp_df() -> pd.DataFrame:
 
     df["Player"] = df["Player Team (Bye)"].apply(lambda x: x.strip())
 
-    return df[["Player", "Team", "AVG"]]
+    return df[["Player", "Team", "AVG", "POS"]]
 
 
 adp_df = get_fantasy_pros_adp_df()
