@@ -32,8 +32,9 @@ def _apply_vbd(x, past_players, pp_df):
 def _apply_draft_pick(x, participants):
     rank = x["Index"] + 1
 
-    pick_in_round = math.floor(rank / (participants + 1)) + 1
-    pick_number = math.remainder(rank, participants)
+    pick_in_round_zero_indexed = math.floor(rank / participants)
+    pick_in_round = pick_in_round_zero_indexed + 1
+    pick_number = rank % participants
 
     return f"Round {pick_in_round}, Pick {pick_number}"
 
