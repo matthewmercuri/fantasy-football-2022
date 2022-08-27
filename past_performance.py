@@ -25,7 +25,7 @@ def get_individuals_df() -> pd.DataFrame:
     df["Player"] = df["Player"].apply(lambda x: x.replace("+", ""))
     df["Player"] = df["Player"].apply(lambda x: x.replace("*", ""))
 
-    df["Touches"] = df[TOUCH_COLUMNS].astype(int).sum(axis=0)
+    df["Touches"] = df[TOUCH_COLUMNS].astype(int).sum(axis="columns")
 
     return df
 
