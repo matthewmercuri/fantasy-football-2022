@@ -2,7 +2,6 @@ import pandas as pd
 
 
 def _apply_zscore(x: pd.Series, stat_dict: dict):
-    print(stat_dict)
     position = x["FantPos"]
     fantpt_touch = x["FantPt/Touch"]
 
@@ -14,10 +13,10 @@ def _apply_zscore(x: pd.Series, stat_dict: dict):
     return (fantpt_touch - stats["mean"]) / stats["std"]
 
 
-def apply_fantpt_touch_stats(pp_df: pd.DataFrame = None):
+def apply_fantpt_touch_stats(pp_df: pd.DataFrame = None) -> pd.DataFrame:
     df = pp_df
 
-    if not df:
+    if df is None:
         df = pd.read_csv("past_performance.csv", index_col=0)
 
     df["FantPos"] = df["FantPos"].astype(str).apply(lambda x: x.strip().upper())

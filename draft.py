@@ -1,6 +1,7 @@
 import pandas as pd
 from thefuzz import process
 from adp import get_fantasy_pros_adp_df
+from fantpt_touch import apply_fantpt_touch_stats
 from past_performance import get_individuals_df
 
 
@@ -21,7 +22,7 @@ def _apply_vbd(x, past_players, pp_df):
 def assemble_draft_csv() -> pd.DataFrame:
     draft_df = get_fantasy_pros_adp_df()
 
-    pp_df = get_individuals_df()
+    pp_df = apply_fantpt_touch_stats(get_individuals_df())
     past_players = pp_df["Player"].tolist()
 
     draft_df["FantPt/Touch"] = draft_df.apply(
