@@ -40,7 +40,3 @@ def get_fantasy_pros_adp_df() -> pd.DataFrame:
     df["Player"] = df["Player Team (Bye)"].apply(lambda x: x.strip())
 
     return df[["Player", "Team", "AVG", "POS"]]
-
-
-adp_df = get_fantasy_pros_adp_df()
-adp_df.to_csv("adp_df.csv")

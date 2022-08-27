@@ -33,6 +33,3 @@ def get_individuals_df() -> pd.DataFrame:
     )
 
     return df
-
-
-print(get_individuals_df())
