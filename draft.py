@@ -32,10 +32,7 @@ def _apply_vbd(x, past_players, pp_df):
 def _apply_draft_pick(x, participants):
     rank = x["Index"]
 
-    pick_in_round_zero_indexed = (
-        math.floor(rank / participants) if rank > participants else 0
-    )
-    pick_in_round = pick_in_round_zero_indexed + 1
+    pick_in_round = math.ceil(rank / participants) if rank > participants else 1
     pick_number = rank % participants
 
     if pick_number == 0:
@@ -82,4 +79,4 @@ def assemble_draft_csv(participants: int = PARTICIPANTS) -> pd.DataFrame:
     return draft_df
 
 
-print(_final_cleanup())
+assemble_draft_csv().to_csv("draft.csv")
