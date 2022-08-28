@@ -44,6 +44,17 @@ def _apply_draft_pick(x, participants):
     return f"Round {pick_in_round}, Pick {pick_number}"
 
 
+def _final_cleanup(df: pd.DataFrame = None) -> pd.DataFrame:
+    final_columns = ["Player", "Team", "AVG", "POS", "FantPt/Touch_Z", "VBD", "Pick"]
+
+    if df is None:
+        df = pd.read_csv("draft.csv", index_col=0)
+
+    df = df[final_columns]
+
+    return df
+
+
 def assemble_draft_csv(participants: int = PARTICIPANTS) -> pd.DataFrame:
     draft_df = get_fantasy_pros_adp_df()
 
@@ -65,7 +76,9 @@ def assemble_draft_csv(participants: int = PARTICIPANTS) -> pd.DataFrame:
     draft_df["Index"] = draft_df.index + 1
     draft_df["Pick"] = draft_df.apply(_apply_draft_pick, axis=1, args=([participants]))
 
+    draft_df = _final_cleanup(draft_df)
+
     return draft_df
 
 
-assemble_draft_csv().to_csv("draft.csv")
+print(_final_cleanup())
