@@ -6,25 +6,35 @@ from fantpt_touch import apply_fantpt_touch_stats
 from past_performance import get_individuals_df
 
 PARTICIPANTS = 12
+MIN_CONFIDENCE = 70
 
 
 def _apply_fantpt_touch(x, past_players, pp_df):
     current_player = x["Player"]
-    pp_df_player, _ = process.extractOne(current_player, past_players[0])
+    pp_df_player, confidence = process.extractOne(current_player, past_players[0])
+
+    if confidence < MIN_CONFIDENCE:
+        return
 
     return pp_df[pp_df["Player"] == pp_df_player]["FantPt/Touch"].iloc[0]
 
 
 def _apply_fantpt_touch_zscore(x, past_players, pp_df):
     current_player = x["Player"]
-    pp_df_player, _ = process.extractOne(current_player, past_players[0])
+    pp_df_player, confidence = process.extractOne(current_player, past_players[0])
+
+    if confidence < MIN_CONFIDENCE:
+        return
 
     return pp_df[pp_df["Player"] == pp_df_player]["FantPt/Touch_Z"].iloc[0]
 
 
 def _apply_vbd(x, past_players, pp_df):
     current_player = x["Player"]
-    pp_df_player, _ = process.extractOne(current_player, past_players[0])
+    pp_df_player, confidence = process.extractOne(current_player, past_players[0])
+
+    if confidence < MIN_CONFIDENCE:
+        return
 
     return pp_df[pp_df["Player"] == pp_df_player]["Fantasy_VBD"].iloc[0]
 
