@@ -50,7 +50,8 @@ def _final_cleanup(df: pd.DataFrame = None) -> pd.DataFrame:
     if df is None:
         df = pd.read_csv("draft.csv", index_col=0)
 
-    df = df[final_columns]
+    df = df[final_columns].convert_dtypes()
+    df["FantPt/Touch_Z"] = df["FantPt/Touch_Z"].round(3)
 
     return df
 
